@@ -26,3 +26,17 @@ Worked correctly with the sample input... :(
 	So I changed it to scan through the string and see if it starts with a digit word, then remove the first character and recurse.
 </details>
 
+
+### Day 2
+#### Part 1
+Each line of input has the game number followed by the list of cube counts, which is delimited but not terminated with a semicolon. The colors are not given in any particular order.
+I'll parse the lines into a tuple of `{gameId, [cubeCounts, ...]}` then make a function that sums the cubeCounts and appends them to the game tuple, then filter based on bag limits.
+
+While working I switched to a map for cube counts like `%{"red" => 0, "green" => 0, "blue" => 0}` instead of a list, because then parsing could go ahead and add up the cube counts per game in whatever order they appear. I do _not_ have a good handle on any of this, and spent a lot of time in the docs and cheatsheets for Regex, Map, Enum, and pattern matching.
+<details>
+	<summary>Spoiler</summary>
+	My first answer, 254, was too low. Oh, duh! I was summing the color counts for each game, when really I should be taking the *max of each color*.
+</details>
+
+#### Part 2
+Good thing my (eventual) approach on part 1 left me with the exact data needed for part 2. It was literally 2 lines to extract and sum the values.
