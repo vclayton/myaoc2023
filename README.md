@@ -60,3 +60,17 @@ Didn't work at first, lining up symbols with numbers again.
 	I broke out a separate function for `is_adjacent?(symbol, number)`. In order to not be calculating String.length as often I'm storing the x1 and x2 values in the "number" tuples now.
 	Tested the is_adjacent? function by refactoring Part 1 to use it and verify the result. Worked great for part 2.
 </details>
+
+
+### Day 4
+Looks similar to day 3, being a "make two lists and compare the items" setup.
+#### Part 1
+Yep. As usual, parsing strings into numbers was the hardest part.
+#### Part 2
+Ugh. Updating maps by iterating unrelated lists (e.g. a range) is not simple in elixir, as far as I can tell. Maybe I should go back to using just a list. Hmm, and expanding it into a bigger list, or a nested list that gets flattened?
+<details>
+	<summary>Spoiler</summary>
+	OK, the mathy trick is that the number of bonus cards goes exponential because there's copies of copies making copies.
+	After a lot of back and forth with maps vs lists and nested reduces, I landed on what was ultimately a simpler approach.
+	Each card knows how many wins it has, so I iterate through the list and pass along an extra list that counts how many bonus copies of this card we've gotten from previous wins. It's initialized with 0 for each card. As I iterate, I pop the first element off the bonus list, which will be for the current card. Then I can add in the bonus copies for this card, and then use that to increment the next n elements of the bonus list.
+</details>
