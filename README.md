@@ -40,3 +40,23 @@ While working I switched to a map for cube counts like `%{"red" => 0, "green" =>
 
 #### Part 2
 Good thing my (eventual) approach on part 1 left me with the exact data needed for part 2. It was literally 2 lines to extract and sum the values.
+
+### Day 3
+I figure I'll parse the input into a list of numbers with the positions, and a list of symbols with their positions, then run each list against the other doing basic "collision detection."
+#### Part 1
+<details>
+	<summary>Spoiler</summary>
+	That worked with the sample data, but my answer on real input was too low. Then I realized I wasn't handing cases like "123*456" correctly when parsing. Fixed and tried again, but this time I was too high.
+	Then realized I had an off-by one in my check for "is this a part number" when comparing it's boundaries against the symbols' positions.
+	Was `sym_x >= x1 - 1 and sym_x <= x2 + 1 and sym_y >= y - 1 and sym_y <= y + 1` but should be
+	`sym_x >= x1 - 1 and sym_x < x2 + 1 and sym_y >= y - 1 and sym_y <= y + 1`
+	All good now.
+</details>
+
+#### Part 2
+Didn't work at first, lining up symbols with numbers again.
+<details>
+	<summary>Spoiler</summary>
+	I broke out a separate function for `is_adjacent?(symbol, number)`. In order to not be calculating String.length as often I'm storing the x1 and x2 values in the "number" tuples now.
+	Tested the is_adjacent? function by refactoring Part 1 to use it and verify the result. Worked great for part 2.
+</details>
