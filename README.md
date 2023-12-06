@@ -35,7 +35,7 @@ I'll parse the lines into a tuple of `{gameId, [cubeCounts, ...]}` then make a f
 While working I switched to a map for cube counts like `%{"red" => 0, "green" => 0, "blue" => 0}` instead of a list, because then parsing could go ahead and add up the cube counts per game in whatever order they appear. I do _not_ have a good handle on any of this, and spent a lot of time in the docs and cheatsheets for Regex, Map, Enum, and pattern matching.
 <details>
 	<summary>Spoiler</summary>
-	My first answer, 254, was too low. Oh, duh! I was summing the color counts for each game, when really I should be taking the *max of each color*.
+	My first answer, 254, was too low. Oh, duh! I was summing the color counts for each game, when really I should be taking the **max of each color**.
 </details>
 
 #### Part 2
@@ -74,3 +74,36 @@ Ugh. Updating maps by iterating unrelated lists (e.g. a range) is not simple in 
 	After a lot of back and forth with maps vs lists and nested reduces, I landed on what was ultimately a simpler approach.
 	Each card knows how many wins it has, so I iterate through the list and pass along an extra list that counts how many bonus copies of this card we've gotten from previous wins. It's initialized with 0 for each card. As I iterate, I pop the first element off the bonus list, which will be for the current card. Then I can add in the bonus copies for this card, and then use that to increment the next n elements of the bonus list.
 </details>
+
+
+### Day 5
+Mapping and ranges. Maybe store the ranges as a source and offset? Whatever, parsing comes first, as usual.
+Parsing worked out to having a map of each source type to a list of ranges, where each range is a map of src, dst, and offset. Src and dst are elixir Range structures, and offset is just an integer.
+Using actual Range structures lets the lookup function be really easy.
+#### Part 1
+<details>
+	<summary>Spoiler</summary>
+	With a table of {from: to} type conversions I could make a `convert(from, to, n, maps)` function that does a single conversion then recursed until from == to.
+	Part 1 calls `convert(:seed, :location, s, maps)` for each seed, then returns the min of the result.
+</details>
+
+#### Part 2
+<details>
+	<summary>Spoiler</summary>
+	Looks like it _should_ just be the exact same as part 1 with a slight modification to the seed inputs. `Range` to the rescue again!
+	**BOOM** OOM Killer. Note to self: don't flatten the list of Ranges, they're too big. That's why Range is streamable. Good time to learn about the Stream module.
+
+	Hmm. Stream fixes the memory explosion, now we see if I can wait out the time explosion or if I have to change the algorithm to be more clever...
+	...only 1.7 billion seeds to brute force...
+	...any time now...
+	...I'm not trying for first place, just an answer...
+
+	Maybe I could approach it by trying to test just the edges of the ranges. That could involve a treeish search, since each seed range could map into multiple soil ranges, each of which could map into multiple fertilizer ranges, etc.
+
+	Rambling: The mappings are a set of ranges and offsets, where an input outside any of the explicit ranges has an implicit offset of 0.
+	For each mapping we could find the range that will have the lowest offset and just ignore the rest when exploring the space?
+</details>
+
+### Day 6
+Parsed input into a list of `{time, dist}` tuples and fiddled around with list comprehensions for this one. The actual calculations were (for Part 1) trivial. Part 2 of course required... Oh. Nothing fancy at all, for once. Just transform the input differently.
+
