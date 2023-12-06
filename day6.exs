@@ -12,7 +12,6 @@ defmodule Aoc do
 		|> String.trim
 		|> String.replace(~r/(Time|Distance):\s*/, "")
 		|> String.split("\n")
-		|> IO.inspect
 		|> Enum.map(fn row ->
 			String.split(row, ~r/[^0-9]+/)
 			|> Enum.map(fn n -> String.to_integer(n) end)
@@ -26,10 +25,9 @@ defmodule Aoc do
 	end
 
 	def count_wins({time, dist}) do
-		wins = for h <- 0..time, do: (h * (time - h)) > dist
-		Enum.filter(wins, fn t -> t end)
+		wins = for h <- 0..time, won? = (h * (time - h)) > dist, do: won?
+		IO.inspect(wins)
 		|> Kernel.length
-		|> IO.inspect
 	end
 
 	def part2(input) do
@@ -38,8 +36,6 @@ defmodule Aoc do
 		dist = String.to_integer(Enum.map(d, &Integer.to_string(&1)) |> Enum.join)
 		IO.inspect({time, dist})
 		count_wins({time, dist})
-		# |> IO.inspect(charlists: :as_lists)
-		# |> Enum.min
 	end
 
 end

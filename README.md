@@ -90,20 +90,43 @@ Using actual Range structures lets the lookup function be really easy.
 #### Part 2
 <details>
 	<summary>Spoiler</summary>
-	Looks like it _should_ just be the exact same as part 1 with a slight modification to the seed inputs. `Range` to the rescue again!
-	**BOOM** OOM Killer. Note to self: don't flatten the list of Ranges, they're too big. That's why Range is streamable. Good time to learn about the Stream module.
+Looks like it _should_ just be the exact same as part 1 with a slight modification to the seed inputs. `Range` to the rescue again!
+**BOOM** OOM Killer. Note to self: don't flatten the list of Ranges, they're too big. That's why Range is streamable. Good time to learn about the Stream module.
 
-	Hmm. Stream fixes the memory explosion, now we see if I can wait out the time explosion or if I have to change the algorithm to be more clever...
-	...only 1.7 billion seeds to brute force...
-	...any time now...
-	...I'm not trying for first place, just an answer...
+Hmm. Stream fixes the memory explosion, now we see if I can wait out the time explosion or if I have to change the algorithm to be more clever...
+...only 1.7 billion seeds to brute force...
+...any time now...
+...I'm not trying for first place, just an answer...
 
-	Maybe I could approach it by trying to test just the edges of the ranges. That could involve a treeish search, since each seed range could map into multiple soil ranges, each of which could map into multiple fertilizer ranges, etc.
+Maybe I could approach it by trying to test just the edges of the ranges. That could involve a treeish search, since each seed range could map into multiple soil ranges, each of which could map into multiple fertilizer ranges, etc.
 
-	Rambling: The mappings are a set of ranges and offsets, where an input outside any of the explicit ranges has an implicit offset of 0.
-	For each mapping we could find the range that will have the lowest offset and just ignore the rest when exploring the space?
+Rambling: The mappings are a set of ranges and offsets, where an input outside any of the explicit ranges has an implicit offset of 0.
+For each mapping we could find the range that will have the lowest offset and just ignore the rest when exploring the space?
 </details>
 
 ### Day 6
 Parsed input into a list of `{time, dist}` tuples and fiddled around with list comprehensions for this one. The actual calculations were (for Part 1) trivial. Part 2 of course required... Oh. Nothing fancy at all, for once. Just transform the input differently.
+<details>
+	<summary>Better Comprehension</summary>
+To count the number of wins I used a list comprehension that basically mapped the {time, dist} to a boolean "win" value, then used Enum.filter to get just the wins:
+```
+def count_wins({time, dist}) do
+	wins = for h <- 0..time, do: (h * (time - h)) > dist
+	Enum.filter(wins, fn t -> t end)
+	|> Kernel.length
+	|> IO.inspect
+end
+```
 
+But that's lame. I wanted to use the comprehension itself to do the filtering. I know you can give it filters but I didn't realise I could put the logic itself there.
+First thought was like `wins = for h <- 0..time, won != false, do: won = (h * (time - h)) > dist` but it didn't work right.
+Eventually learned I could put the calculation itself in the filter clause and just return the resulting value like so:
+```
+for h <- 0..time, won? = (h * (time - h)) > dist, do: won?
+```
+
+And in hindsight it turns out this works just fine also.
+```
+Enum.filter(0..time, fn h -> (h * (time - h)) > dist end)
+```
+</details>
