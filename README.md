@@ -169,3 +169,10 @@ By taking the same per-letter frequency count as part 1 and just remove the joke
 ```
 The only surprise was finding out that there was a 5-joker hand in the dataset.
 </details>
+
+### Day 8
+Github markdown doesn't seem to be doing all the code formatting I want. Whatever.
+This exercise looks like binary tree parsing and traversal. I decided to use binary matching for extracting the path data from each line, but it didn't work like I wanted. Regex it is.
+
+I did use binary match and concat to get the rotating first element of the instruction list.
+
