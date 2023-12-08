@@ -130,3 +130,42 @@ And in hindsight it turns out this works just fine also.
 Enum.filter(0..time, fn h -> (h * (time - h)) > dist end)
 ```
 </details>
+
+
+### Day 7
+Going to parse these hands into maps, calculate the type with pattern matching probably, and calculate the sub-order by maybe just pretend the card string represents a base-14 integer.
+#### Part 1
+<details>
+	<summary>Sorting and matching</summary>
+I wound up sorting them by giving each hand type a number and multiplying it by 10 million, and adding the sub-order that was parsed as a hex value.
+Also, I calculated the hand type by counting the frequency of each letter, then pattern matching like this
+```
+def match_type([5]), do: {:five, 7}
+def match_type([4,1]), do: {:four, 6}
+def match_type([3,2]), do: {:fullhouse, 5}
+def match_type([3,1,1]), do: {:three, 4}
+def match_type([2,2,1]), do: {:twopair, 3}
+def match_type([2,1,1,1]), do: {:onepair, 2}
+def match_type([1,1,1,1,1]), do: {:highcard, 1}
+```
+</details>
+
+#### Part 2
+Ugh. That pattern matching from part 1 will have to be heavily modified. Maybe step through all of the cards that might be replaced by a Joker and see if they match any patterns, then take the best one?
+Also I was sad to have to duplicate so much of the code because parsing it all is _mostly_ the same as part 1 but not. I wonder if some kind of variable could be used to indicate which part we're on. I guess ETS is the answer, which is less simple than I'd hoped.
+<details>
+	<summary>Sorting and matching again</summary>
+By taking the same per-letter frequency count as part 1 and just remove the jokers from that, I could pass it separately to the matching function and make handy use of guard clauses
+```
+	# Given (NumberOfJokers, [numbers of each non-joker])
+	def match_type2(5, _), do: {:five, 7}
+	def match_type2(jokers, [c]) when jokers + c == 5, do: {:five, 7}
+	def match_type2(jokers, [c,1]) when jokers + c == 4, do: {:four, 6}
+	def match_type2(jokers, [c,2]) when jokers + c == 3, do: {:fullhouse, 5}
+	def match_type2(jokers, [c,1,1]) when jokers + c == 3, do: {:three, 4}
+	def match_type2(jokers, [c,2,1]) when jokers + c == 2, do: {:twopair, 3}
+	def match_type2(jokers, [c,1,1,1]) when jokers + c == 2, do: {:onepair, 2}
+	def match_type2(jokers, [1,1,1,1,1]), do: {:highcard, 1}
+```
+The only surprise was finding out that there was a 5-joker hand in the dataset.
+</details>
