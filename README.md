@@ -174,5 +174,24 @@ The only surprise was finding out that there was a 5-joker hand in the dataset.
 Github markdown doesn't seem to be doing all the code formatting I want. Whatever.
 This exercise looks like binary tree parsing and traversal. I decided to use binary matching for extracting the path data from each line, but it didn't work like I wanted. Regex it is.
 
-I did use binary match and concat to get the rotating first element of the instruction list.
+#### Part 1
+I did use binary match and concat to get the rotating first element of the instruction list. So yay. Not sure I need to know the entire path, just the length, but for now it doesn't hurt to track it.
+
+#### Part 2
+Yay, list comprehension worked for filtering the list of starting nodes. Now maybe `Enum.reduce_while` will be the perfect fit for following each path until we're good.
+<details>
+	<summary>Spoilers</summary>
+OK, got something working on the sample, using reduce_while and also Stream.cycle to iterate through the instructions list this time. Sure is taking its time on the real data...
+I wonder if it's just slow to lookup the node in the map each time? Like maybe actually storing it as a graph would make traversal faster?
+
+OK, after letting it run for 25 hours I think I have an alternative approach. The number of starting nodes is 5 (in my data). The instruction pattern is repeating, so the pattern of nodes visited along the path should be repeating too. I can look at each of the 5 starting points and run it until it starts to repeat, giving me a step count for that path.
+</details>
+
+
+### Day 9
+#### Part 1
+First answer was too high. I think because I tried a shortcut of deriving until the last element in the derived list was 0, rather than until the entire list was 0.
+
+Hmm, especially since the inputs contain negative numbers also. Yep, checking the entire list fixed it.
+
 
