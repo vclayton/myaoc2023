@@ -194,4 +194,6 @@ First answer was too high. I think because I tried a shortcut of deriving until 
 
 Hmm, especially since the inputs contain negative numbers also. Yep, checking the entire list fixed it.
 
+#### Part 2
+Yay, a simple change to which element gets examined and a flip in the arithmetic.
 
