@@ -226,4 +226,4 @@ Yay, gold star first try!
 #### Part 1
 Simple parsing, simple algorithm. First try.
 #### Part 2
-
+Again, fairly straightforward. It sure was nice to be able to use the List.keystore and List.keydelete functions for processing the list of operations.
