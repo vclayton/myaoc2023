@@ -197,3 +197,19 @@ Hmm, especially since the inputs contain negative numbers also. Yep, checking th
 #### Part 2
 Yay, a simple change to which element gets examined and a flip in the arithmetic.
 
+
+### Day 14
+#### Part 1
+I started out with the grid made of tuples I was trying for day 10. That worked fine for adding up the numbers, but for the "tilting" I decided that storing each column as a list would be cleaner.
+First I made a function that adds up the values of the rocks in a column and tested it on the pre-tilted sample data.
+Then I made a function that tilts a column by one time step, and I repeat it n times on a column on length n. Did that for each column, then summed up all the results.
+Silver star, first try!
+
+#### Part 2
+<details>
+		<summary>Spoilers</summary>
+To make the "spin cycle" I can take what I've got from part 1, and need to be able to make new column orientations from an existing oriantation.
+Also because of the large number of cycles asked for I suspect the rock pattern will eventually be repeating. Probably like Day 8 Part 2 is probably supposed to work, since the naive "just keep running" approach _still_ hasn't finished after 261 hours of CPU time.
+So I'll keep a snapshot of the state after each spin (maybe as a checksum or hash?) and compare it against a list of previous states until I see a repeat. Then divide the cycle number into 1000000000 and add the remainder or something to find the right snapshot.
+
+</details>
