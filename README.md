@@ -185,6 +185,12 @@ OK, got something working on the sample, using reduce_while and also Stream.cycl
 I wonder if it's just slow to lookup the node in the map each time? Like maybe actually storing it as a graph would make traversal faster?
 
 OK, after letting it run for 25 hours I think I have an alternative approach. The number of starting nodes is 5 (in my data). The instruction pattern is repeating, so the pattern of nodes visited along the path should be repeating too. I can look at each of the 5 starting points and run it until it starts to repeat, giving me a step count for that path.
+
+_Twelve Days Later..._
+OK, confidence boosted by getting Day 14 Part 2 figured out. I _think_ I can use the same strategy of finding when the path starts repeating, do that for each starting node, and then find the least common multiple of the repetition lengths.
+Now I've got a list of 5 tuples of `{repeats starting at offset, repeating length}` and I just need to solve for where they all intersect. Very rusty algebra, engage! Or not. When I plugged the numbers into 5 sets of `y = offset + repeat * x` there is no common y.
+Back to the least common multiple idea... Or maybe I can crunch this simpler problem numerically?
+
 </details>
 
 
