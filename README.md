@@ -211,5 +211,12 @@ Silver star, first try!
 To make the "spin cycle" I can take what I've got from part 1, and need to be able to make new column orientations from an existing oriantation.
 Also because of the large number of cycles asked for I suspect the rock pattern will eventually be repeating. Probably like Day 8 Part 2 is probably supposed to work, since the naive "just keep running" approach _still_ hasn't finished after 261 hours of CPU time.
 So I'll keep a snapshot of the state after each spin (maybe as a checksum or hash?) and compare it against a list of previous states until I see a repeat. Then divide the cycle number into 1000000000 and add the remainder or something to find the right snapshot.
+Rotating the grid looks like transposing and then reversing the column order. Spin function just tilts and rotates 4 times.
 
+Sample data matches example after 1,2, and 3 cycles. So I'll crank it up to 1 billion and let it crunch while I read about algorithms for detecting repeating patterns...
+I started dumping out the cycle number and md5 hash of the grid for the first 50 cycles, and by eyeballing it can see that (for sample input) it repeats every 7 cycles, with the first 3 never repeated.
+And since a given pattern will always spin into the same next pattern I just need to check to see if we've _ever_ seen this pattern before to know that we're starting to repeat.
+So given cycle length _c_, starting at offset _o_, getting element _n_ is the maybe same as getting element ((_n_ - _o_) mod _c_ + _o_)?
+
+Yay, gold star first try!
 </details>
